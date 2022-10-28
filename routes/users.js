@@ -1,6 +1,11 @@
 const express = require('express');
 const validator = require("email-validator");
 const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
+const verfiyAcc = require('../controller/auth')
+
+require('dotenv').config()
+
 const db = require('../database/dbConnection');
 
 
@@ -33,12 +38,11 @@ router.post('/register', (req, res) => {
 })
 
 router.post('/login', (req, res) => {
-    const {email, password} = req.body
+    const {username, password} = req.body
 
-    db.query(`SELECT * FROM users where email = "${email}"`, (err, result) => {
+    db.query(`SELECT * FROM users where username = "${username}"`, (err, result) => {
         if (err) throw err
 
-        console.log(result.length == 0)
         if (result.length == 0) {return res.status(400).json({
             message: `Doesn't have account? Please register!`
         })}
@@ -46,24 +50,29 @@ router.post('/login', (req, res) => {
         if (result[0].password !== password) { return res.status(400).json({
             message: `Forgot password?`
         })}
-        res.status(200).json({
-            message: `Login successful`
+
+        const token = jwt.sign({username: username, password: password}, process.env.SECRET_TOKEN)
+        res.status(200).header('Bearer-token', token).json({
+            message: token
         })
     })
 
 
 })
 
-router.delete('/:id', (req,res) =>{
-    const id = req.params.id
+router.delete('/', verfiyAcc, (req,res) =>{
+    // const id = req.params.id
+    token = req.header('Bearer-token');
+    const {username, password} = jwt.verify(token, process.env.SECRET_TOKEN);
 
-    db.query(`DELETE FROM users WHERE id = "${id}"`, (err, result) => {
+    db.query(`DELETE FROM users WHERE username = "${username}"`, (err, result) => {
         if (err) throw err
         res.status(200).json({
-            message: `account with id ${id} has been deleted`
+            message: `account with username ${username} has been deleted`
         })
     })
 
 })
+
 
 module.exports = router;
