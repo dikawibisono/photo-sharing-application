@@ -1,6 +1,7 @@
 const express = require('express');
 
-const users = require('./routes/users')
+const users = require('./routes/users');
+const photos = require('./routes/photos')
 
 const app = express();
 const PORT = 3000
@@ -12,6 +13,8 @@ app.get('/', (req, res) => {
 })
 
 app.use('/users', users)
+
+app.use('/photos', photos)
 
 app.listen(PORT, () => {
     console.log('listening on port ' + PORT)
