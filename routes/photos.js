@@ -1,7 +1,7 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const verifyAcc = require('../middleware/auth');
-const {getAllPhotos,getAllPhotosByUserId, postPhoto} = require('../controller/photos')
+const {getAllPhotos,getAllPhotosByUserId, postPhoto, deletePhoto} = require('../controller/photos')
 const multerMiddleware = require('../middleware/multerMiddleware')
 
 
@@ -17,6 +17,7 @@ router.get('/:id', getAllPhotosByUserId)
 
 router.post('/', verifyAcc, multerMiddleware, postPhoto)
 
+router.delete('/:id', verifyAcc, deletePhoto)
 
 
 module.exports = router;

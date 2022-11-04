@@ -16,6 +16,7 @@ const getAllPhotos = (req, res) => {
     })
 }
 
+//function get all photos by user id
 const getAllPhotosByUserId = (req, res) => {
     const id = req.params.id;
     db.query(`SELECT * FROM photos WHERE user_id = "${id}"`, (err, result) => {
@@ -28,6 +29,7 @@ const getAllPhotosByUserId = (req, res) => {
     })
 }
 
+//function post photo
 const postPhoto = (req, res) => {
     const {title, caption} = req.body;
     const photo_url = req.file.path
@@ -55,4 +57,24 @@ const postPhoto = (req, res) => {
 
 }
 
-module.exports = {getAllPhotos, getAllPhotosByUserId, postPhoto}
+//function delete photo
+const deletePhoto = (req, res) => {
+    const id = req.params.id
+    const user = jwt.verify(req.header('authorization').split(' ')[1], process.env.SECRET_TOKEN);
+    const user_id = user.id
+
+    db.query(`DELETE FROM photos WHERE id = "${id}" AND user_id = "${user_id}"`, (err, result) => {
+        if (err) {
+            res.status(400).json({
+                message: `Please input id correctly`
+            })
+        }
+
+        res.status(200).json({
+            message: `Photo deleted successfully`
+        })
+    })
+
+}
+
+module.exports = {getAllPhotos, getAllPhotosByUserId, postPhoto, deletePhoto}
