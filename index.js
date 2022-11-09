@@ -17,6 +17,8 @@ app.use('/users', users)
 
 app.use('/photos', photos)
 
+app.use('/uploads/photos', express.static('uploads/photos'))
+
 app.use('/comments', comments)
 
 app.listen(PORT, () => {
