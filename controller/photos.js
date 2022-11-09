@@ -32,7 +32,7 @@ const getAllPhotosByUserId = (req, res) => {
 //function post photo
 const postPhoto = (req, res) => {
     const {title, caption} = req.body;
-    const photo_url = req.file.path
+    const photo_url = `${req.get('host')}/uploads/photos/${req.file.filename}`
     
     
     const {id} = jwt.verify(req.header('authorization').split(' ')[1], process.env.SECRET_TOKEN);
@@ -42,7 +42,7 @@ const postPhoto = (req, res) => {
         , (err, result) => {
             if (err) {
                 res.status(400).json({
-                    message: `error, make sure photo url is correct`
+                    message: `Error uploading photo`
                 })
             }
 
