@@ -1,7 +1,10 @@
 const db = require('../database/dbConnection');
+const jwt = require('jsonwebtoken');
 
 const postComment = (req, res) => {
     const {photo_id, comment} = req.body
+
+    if(!photo_id || !comment){return res.status(400).json({message: "Missing input"})}
 
     const user = jwt.verify(req.header('authorization').split(' ')[1], process.env.SECRET_TOKEN);
     const user_id = user.id
@@ -17,7 +20,7 @@ const postComment = (req, res) => {
             })
         }
 
-        res.status(200).json({
+        res.status(201).json({
             message: `Comment post successfully`
         })
     })
@@ -37,7 +40,7 @@ const getComments = (req, res) => {
 }
 
 const deleteComment = (req, res) => {
-    const id = req.body.photo_id
+    const id = req.params.id
 
     const user = jwt.verify(req.header('authorization').split(' ')[1], process.env.SECRET_TOKEN);
     const user_id = user.id

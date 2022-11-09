@@ -9,10 +9,10 @@ require('dotenv').config();
 //function register user
 const registerUser = (req, res) => {
     const {username, email, password} = req.body
-
+    
     //validation
     if (!(validator.validate(email)) || !email){return res.status(400).json({message: "Invalid email"})}
-    if (!username) {return res.status(400).json({message: "jangan lupa username boy"})}
+    if (!username) {return res.status(400).json({message: "Please input username"})}
     if (!password || password.length < 6) {return res.status(400).json({message: "Password should be at least 6 characters"})}
 
     const hash = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
