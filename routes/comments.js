@@ -11,7 +11,7 @@ router.post('/', verifyAcc, postComment);
 
 router.get('/', verifyAcc, getComments)
 
-router.delete('/', verifyAcc, deleteComment)
+router.delete('/:id', verifyAcc, deleteComment)
 
 
 module.exports = router;
