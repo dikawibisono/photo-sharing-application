@@ -5,7 +5,7 @@ const photos = require('./routes/photos');
 const comments = require('./routes/comments');
 
 const app = express();
-const PORT = 3000
+const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
     res.send({
@@ -21,6 +21,6 @@ app.use('/uploads/photos', express.static('uploads/photos'))
 
 app.use('/comments', comments)
 
-app.listen(PORT, () => {
-    console.log('listening on port ' + PORT)
+app.listen(port, () => {
+    console.log('listening on port ' + port)
 })

@@ -14,25 +14,32 @@ const registerUser = (req, res) => {
     if (!(validator.validate(email)) || !email){return res.status(400).json({message: "Invalid email"})}
     if (!username) {return res.status(400).json({message: "Please input username"})}
     if (!password || password.length < 6) {return res.status(400).json({message: "Password should be at least 6 characters"})}
-
     const hash = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
     
     const sqlInput = `INSERT INTO  users (username, email, password)
                 VALUES ("${username}", "${email}", "${hash}")`
     db.query(sqlInput, (err, result) => {
         if (err) {
-            res.json({
+            return res.status(400).json({
                 message: `username not available`
             })
+        } else {
+            db.query(`SELECT id, username, created_at FROM users where username = "${username}"`, (err, result) => {
+                    return res.json({
+                        message:`Register succesfully`,
+                        data: result[0]
+                    })
+                })
         }
     })
 
-    db.query(`SELECT id, username, created_at FROM users where username = "${username}"`, (err, result) => {
-        res.status(201).json({
-            message:`Register succesfully`,
-            data: result[0]
-        })
-    })
+    // db.query(`SELECT id, username, created_at FROM users where username = "${username}"`, (err, result) => {
+    //     return res.json({
+    //         message:`Register succesfully`,
+    //         data: result[0]
+    //     })
+    // })
+    // console.log('pass')
 }
 
 //function login user

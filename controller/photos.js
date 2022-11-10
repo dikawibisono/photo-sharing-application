@@ -32,6 +32,7 @@ const getAllPhotosByUserId = (req, res) => {
 //function post photo
 const postPhoto = (req, res) => {
     const {title, caption} = req.body;
+    if (!title || !caption) return res.status(400).json({message:`Invalid input`});
     const photo_url = `${req.get('host')}/uploads/photos/${req.file.filename}`
     
     
