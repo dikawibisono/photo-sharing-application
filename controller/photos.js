@@ -64,6 +64,10 @@ const deletePhoto = (req, res) => {
     const user = jwt.verify(req.header('authorization').split(' ')[1], process.env.SECRET_TOKEN);
     const user_id = user.id
 
+    db.query(`DELETE FROM comments WHERE photo_id = "${id}"`, (err, result) => {
+        if (err) throw err
+    })
+
     db.query(`DELETE FROM photos WHERE id = "${id}" AND user_id = "${user_id}"`, (err, result) => {
         if (err) {
             res.status(400).json({
