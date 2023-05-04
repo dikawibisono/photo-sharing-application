@@ -9,3 +9,6 @@ This is how entity relationship work shown by diagram.
 
 ## Architecture Diagram PSA
 This is a architecture diagram of merchant service.![architecture diagram](https://user-images.githubusercontent.com/97390732/201388554-91a0ddb1-3169-48d4-afe4-bc562cdf7f9c.JPG)
+
+## Postman Documentation
+https://documenter.getpostman.com/view/23401461/2s8Z6yWsxK
